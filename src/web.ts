@@ -10,7 +10,7 @@ export class ZebraPrinterWeb extends WebPlugin implements ZebraPrinterPlugin {
 
   async print(options: {ip: string, port: number, zpl: string }): Promise<{ value:string }> {
 
-    var request = new Request("http://"+options.ip+"/pstprnt",{
+    var request = new Request(`http://${options.ip}:${options.port}`,{
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
