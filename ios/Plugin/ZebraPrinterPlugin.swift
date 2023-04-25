@@ -30,6 +30,7 @@ public class ZebraPrinterPlugin: CAPPlugin {
                 case .success:
                     guard let data = client.read(1024*10)
                     else {
+                        client.close()
                         call.resolve([
                                     "value": "Succesfully sent to printer"
                          ])
@@ -37,6 +38,7 @@ public class ZebraPrinterPlugin: CAPPlugin {
                             
                     }
                 case .failure(let error):
+                    client.close()
                     call.reject(error.localizedDescription)
 
             }
