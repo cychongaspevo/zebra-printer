@@ -1,5 +1,5 @@
 {
-  "name": "zebra-printer-label",
+  "name": "zebra-printer-ip",
   "version": "0.0.7",
   "description": "connect zebra printer via local IP",
   "main": "dist/plugin.cjs.js",
@@ -13,14 +13,14 @@
     "ios/Plugin/",
     "ZebraPrinterLabel.podspec"
   ],
-  "author": "sashko687",
+  "author": "cy.chong",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sashko687/zebra-printer"
+    "url": "https://github.com/cychongaspevo/zebra-printer-ip"
   },
   "bugs": {
-    "url": "https://githab.com/sashko687/zebra-printer/issues"
+    "url": "https://github.com/cychongaspevo/zebra-printer-ip/issues"
   },
   "keywords": [
     "capacitor",

@@ -8,21 +8,44 @@ export class ZebraPrinterWeb extends WebPlugin implements ZebraPrinterPlugin {
     return options;
   }
 
-  async print(options: {ip: string, port: number, zpl: string }): Promise<{ value:string }> {
+  async print(options: { ip: string, port: number, zpl: string, timeout?: number }): Promise<{ value: string }> {
+    const controller = new AbortController();
 
-    var request = new Request("http://"+options.ip+"/pstprnt",{
+    var request = new Request(`http://${options.ip}:${options.port}`, {
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
-      body: options.zpl
+      body: options.zpl,
+      signal: controller.signal
     });
-    return await fetch(request)
-    // .then(handleErrors)
-    .then(()=>{
-      return {value: "print succesfully executed" }
-    })
-    .catch((error)=>{
-        throw Error(error);
-    });
+
+    if (options.timeout && options.timeout > 0) {
+
+      return Promise.race([
+        fetch(request),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), options.timeout),
+        ),
+      ]).then(res => {
+        console.log('res:', res);
+        return {value: "print succesfully executed", res: res}
+      }).catch(err => {
+  
+        console.log('err:', err);
+        controller.abort();
+
+        throw Error(err);
+      });
+    } else {
+      return await fetch(request)
+        // .then(handleErrors)
+        .then(() => {
+          return { value: "print succesfully executed" }
+        })
+        .catch((error) => {
+          throw Error(error);
+        });
+    }
+
   }
 }
